@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: servicemesh-vm
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: servicemesh
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: sm-component-vm
+    repoURL: https://github.com/Carlos-ZRM/servicemesh-full-demo.git
+    targetRevision: HEAD
+
