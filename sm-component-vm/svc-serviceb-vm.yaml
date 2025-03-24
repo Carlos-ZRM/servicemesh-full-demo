@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-serviceb-vm
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    kubevirt.io/domain: serviceb-vm
+  sessionAffinity: None
+  type: ClusterIP

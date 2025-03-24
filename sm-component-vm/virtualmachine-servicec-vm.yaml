@@ -1,0 +1,91 @@
+﻿apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations: {}
+  labels:
+    app: servicec-vm
+    kubevirt.io/dynamic-credentials-support: 'true'
+  name: servicec-vm
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        creationTimestamp: null
+        name: servicec-vm
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: fedora
+          namespace: openshift-virtualization-os-images
+        storage:
+          resources:
+            requests:
+              storage: 30Gi
+  running: true
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
+        vm.kubevirt.io/flavor: small
+        vm.kubevirt.io/os: fedora
+        vm.kubevirt.io/workload: server
+      creationTimestamp: null
+      labels:
+        kubevirt.io/domain: servicec-vm
+        kubevirt.io/size: small
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - macAddress: '02:80:52:00:00:09'
+              masquerade: {}
+              model: virtio
+              name: default
+          rng: {}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi: {}
+        machine:
+          type: pc-q35-rhel9.4.0
+        memory:
+          guest: 2Gi
+        resources: {}
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: servicec-vm
+          name: rootdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              user: fedora
+              password: fedora
+              chpasswd: { expire: False }
+              write_files:
+                - path: /etc/environment
+                  content: |
+                    MY_VARIABLE='my_value'
+                    ANOTHER_VARIABLE='another_value'
+              runcmd:
+                - source /etc/environment
+          name: cloudinitdisk
