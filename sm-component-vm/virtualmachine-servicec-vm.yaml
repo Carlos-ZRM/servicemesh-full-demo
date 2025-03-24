@@ -50,8 +50,7 @@ spec:
                 bus: virtio
               name: cloudinitdisk
           interfaces:
-            - macAddress: '02:80:52:00:00:09'
-              masquerade: {}
+            - masquerade: {}
               model: virtio
               name: default
           rng: {}
