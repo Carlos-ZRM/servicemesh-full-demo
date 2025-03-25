@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"networking.istio.io/v1alpha3","kind":"VirtualService","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"servicemesh-full-node-d","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"sm-component","app.kubernetes.io/version":"1.16.0","helm.sh/chart":"sm-component-0.1.0"},"name":"servicemesh-full-node-d","namespace":"servicemesh"},"spec":{"gateways":["servicemesh/servicemesh-node","mesh"],"hosts":["servicemesh-node-istio-system.","servicemesh-full-node-d.servicemesh.svc.cluster.local","servicemesh-full-node-d"],"http":[{"match":[{"uri":{"prefix":"/chain"}}],"route":[{"destination":{"host":"servicemesh-full-node-d.servicemesh.svc.cluster.local","subset":"v1"},"weight":100}]}]}}
+  creationTimestamp: "2025-03-24T22:57:54Z"
+  generation: 2
+  labels:
+    app.kubernetes.io/instance: servicemesh-full-node-d
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: sm-component
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: sm-component-0.1.0
+  name: servicemesh-full-node-d
+  namespace: servicemesh
+  resourceVersion: "552407"
+  uid: feb7c8af-308c-4bd8-9a71-10ffc72654f3
+spec:
+  gateways:
+  - servicemesh/servicemesh-node
+  - mesh
+  hosts:
+  - servicemesh-node-istio-system.
+  - servicemesh-full-node-d.servicemesh.svc.cluster.local
+  - servicemesh-full-node-d
+  http:
+  - match:
+    - uri:
+        prefix: /chain
+    route:
+    - destination:
+        host: servicemesh-full-node-d.servicemesh.svc.cluster.local
+        subset: v1
+      weight: 75
+    - destination:
+        host: servicemesh-full-node-d.servicemesh.svc.cluster.local
+        subset: vvm
+      weight: 25
