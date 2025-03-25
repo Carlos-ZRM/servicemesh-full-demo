@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/instance: servicemesh-full-node-b
     app.kubernetes.io/name: sm-component
     kubevirt.io/dynamic-credentials-support: 'true'
+    version: vvm
   name: servicemesh-full-vmi-b
 spec:
   dataVolumeTemplates:
@@ -39,6 +40,7 @@ spec:
         app: servicemesh-full-node-b
         app.kubernetes.io/instance: servicemesh-full-node-b
         app.kubernetes.io/name: sm-component
+        version: vvm
     spec:
       architecture: amd64
       domain:
